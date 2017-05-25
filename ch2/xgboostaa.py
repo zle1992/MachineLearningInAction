@@ -1,11 +1,30 @@
-#coding: utf-8  
+ 
 import numpy as np 
 import operator
 import matplotlib
 from numpy import *
 import matplotlib.pyplot as plt 
 import os 
+import pandas as pd
+import xgboost as xgb
+def xgb():
 
+    # specify parameters via map
+    param = {'max_depth':2, 'eta':1, 'silent':1, 'objective':'binary:logistic' }
+    num_round = 2
+    filename = "datingTestSet2.txt"
+    dataX ,labels = file2matrix(filename)
+    #归一化
+    data = np.random.rand(5,10) # 5 entities, each contains 10 features
+    label = np.random.randint(2, size=5) # binary target
+    dtrain = xgb.DMatrix( data, label=label)
+    normMat,ranges,minVals = autoNorm(dataX)
+    traindata = xgb.DMatrix( normMat, label=labels)
+    traindata =  xgb.DMatrix(normMat,label=labels)
+    bst = xgb.train(param, traindata, num_round)
+    # make prediction
+    preds = bst.predict(dtest)
+    print(preds)
 def createDataSet():
     group = np.array([
     [1.0,1.1],
@@ -143,10 +162,11 @@ def plot(): #画datingTestSet2.txt这个数据的图像
     plt.show()
 if __name__ == '__main__':
     #simpletest()   # 测试createDataSet 和classify0 这2个函数
-    plot()   #画datingTestSet2.txt这个数据的图像
+    #plot()   #画datingTestSet2.txt这个数据的图像
     #handwritingClassTest()  #手写识别程序
     #datingClassTest()  #约会 识别程序
     #classifyPerson()  #从命令行读入数据
+    xgb()
    
    
 
